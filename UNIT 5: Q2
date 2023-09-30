@@ -1,0 +1,83 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+
+public class StudentBioDataForm extends Frame {
+    private Label nameLabel, rollNoLabel, ageLabel;
+    private TextField nameTextField, rollNoTextField, ageTextField;
+    private Button saveButton;
+    private Connection connection;
+
+    public StudentBioDataForm() {
+        setTitle("Student Bio-data Form");
+        setSize(400, 200);
+        setLayout(new FlowLayout());
+
+        nameLabel = new Label("Name:");
+        rollNoLabel = new Label("Roll No:");
+        ageLabel = new Label("Age:");
+
+        nameTextField = new TextField(20);
+        rollNoTextField = new TextField(10);
+        ageTextField = new TextField(5);
+
+        saveButton = new Button("Save");
+
+        add(nameLabel);
+        add(nameTextField);
+        add(rollNoLabel);
+        add(rollNoTextField);
+        add(ageLabel);
+        add(ageTextField);
+        add(saveButton);
+
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                saveStudentData();
+            }
+        });
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/your_database", "your_username", "your_password");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.exit(1);
+        }
+
+        setVisible(true);
+    }
+
+    private void saveStudentData() {
+        String name = nameTextField.getText();
+        String rollNo = rollNoTextField.getText();
+        String age = ageTextField.getText();
+
+        try {
+            Statement statement = connection.createStatement();
+            String query = "INSERT INTO student (name, roll_no, age) VALUES (?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, rollNo);
+            preparedStatement.setString(3, age);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+            nameTextField.setText("");
+            rollNoTextField.setText("");
+            ageTextField.setText("");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        new StudentBioDataForm();
+    }
+}
