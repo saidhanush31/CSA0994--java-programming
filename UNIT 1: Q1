@@ -1,0 +1,59 @@
+public class Account {
+    private double balance;
+    private double interestRate;
+
+    public Account() {
+        this.balance = 0.0;
+        this.interestRate = 0.05; // Default interest rate (5%)
+    }
+
+    public Account(double initialBalance) {
+        this.balance = initialBalance;
+        this.interestRate = 0.05; // Default interest rate (5%)
+    }
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Deposited $" + amount + ". New balance: $" + balance);
+        } else {
+            System.out.println("Invalid deposit amount. Please enter a positive amount.");
+        }
+    }
+
+    public void withdraw(double amount) {
+        if (amount > 0) {
+            if (amount <= balance) {
+                balance -= amount;
+                System.out.println("Withdrew $" + amount + ". New balance: $" + balance);
+            } else {
+                System.out.println("Insufficient funds. A $5 penalty will be charged.");
+                balance -= 5;
+                System.out.println("Penalty charged. New balance: $" + balance);
+            }
+        } else {
+            System.out.println("Invalid withdrawal amount. Please enter a positive amount.");
+        }
+    }
+
+    public double inquireBalance() {
+        return balance;
+    }
+
+    public void computeInterest() {
+        double interest = balance * interestRate;
+        balance += interest;
+        System.out.println("Interest of $" + interest + " added. New balance: $" + balance);
+    }
+
+    public static void main(String[] args) {
+      
+        Account myAccount = new Account(1000);
+
+        myAccount.deposit(500);
+        myAccount.withdraw(300);
+        myAccount.computeInterest();
+        double balance = myAccount.inquireBalance();
+        System.out.println("Current balance: $" + balance);
+    }
+}
