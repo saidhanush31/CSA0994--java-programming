@@ -1,0 +1,65 @@
+import java.applet.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class BouncingBallApplet extends Applet implements MouseListener, Runnable {
+    private int ballX, ballY;       
+    private int ballRadius = 20;   
+    private int dx = 2, dy = 2;     
+    private Thread animationThread;
+    private boolean isRunning = false;
+
+    public void init() {
+        setSize(400, 400);
+        setBackground(Color.white);
+        addMouseListener(this);
+    }
+
+    public void mouseClicked(MouseEvent e) {}
+
+    public void mouseEntered(MouseEvent e) {}
+
+    public void mouseExited(MouseEvent e) {}
+
+    public void mousePressed(MouseEvent e) {
+        if (!isRunning) {
+            ballX = e.getX();
+            ballY = e.getY();
+            isRunning = true;
+            animationThread = new Thread(this);
+            animationThread.start();
+        }
+    }
+
+    public void mouseReleased(MouseEvent e) {}
+
+    public void paint(Graphics g) {
+        g.setColor(Color.blue);
+        g.fillOval(ballX - ballRadius, ballY - ballRadius, 2 * ballRadius, 2 * ballRadius);
+    }
+
+    public void run() {
+        while (isRunning) {
+        
+            ballX += dx;
+            ballY += dy;
+
+            if (ballX - ballRadius < 0 || ballX + ballRadius > getWidth()) {
+                dx = -dx; 
+            if (ballY - ballRadius < 0 || ballY + ballRadius > getHeight()) {
+                dy = -dy; 
+            }
+
+            repaint();
+        try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void stop() {
+        isRunning = false;
+    }
+}
