@@ -1,0 +1,50 @@
+public class Triangle {
+    private double side1;
+    private double side2;
+    private double side3;
+
+    public Triangle(double side1, double side2, double side3) {
+        this.side1 = side1;
+        this.side2 = side2;
+        this.side3 = side3;
+    }
+
+    public boolean isRight() {
+        // Check if it's a right triangle using the Pythagorean theorem
+        double[] sides = { side1, side2, side3 };
+        java.util.Arrays.sort(sides);
+
+        double a = sides[0];
+        double b = sides[1];
+        double c = sides[2];
+
+        return Math.pow(a, 2) + Math.pow(b, 2) == Math.pow(c, 2);
+    }
+
+    public boolean isScalene() {
+        return !isIsosceles() && !isEquilateral();
+    }
+
+    public boolean isIsosceles() {
+        return (side1 == side2 && side2 != side3) || (side1 == side3 && side3 != side2) || (side2 == side3 && side3 != side1);
+    }
+
+    public boolean isEquilateral() {
+        return side1 == side2 && side2 == side3;
+    }
+
+    public static void main(String[] args) {
+        // Example usage:
+        Triangle triangle1 = new Triangle(3, 4, 5);
+        System.out.println("Is Right Triangle: " + triangle1.isRight());
+        System.out.println("Is Scalene Triangle: " + triangle1.isScalene());
+        System.out.println("Is Isosceles Triangle: " + triangle1.isIsosceles());
+        System.out.println("Is Equilateral Triangle: " + triangle1.isEquilateral());
+
+        Triangle triangle2 = new Triangle(5, 5, 5);
+        System.out.println("Is Right Triangle: " + triangle2.isRight());
+        System.out.println("Is Scalene Triangle: " + triangle2.isScalene());
+        System.out.println("Is Isosceles Triangle: " + triangle2.isIsosceles());
+        System.out.println("Is Equilateral Triangle: " + triangle2.isEquilateral());
+    }
+}
