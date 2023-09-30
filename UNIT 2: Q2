@@ -1,0 +1,82 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+
+class Patient {
+    private String name;
+    private int age;
+    private String sex;
+    private String address;
+    private String illness;
+    private double hospitalCharges;
+    private int daysAdmitted;
+
+    public Patient(String name, int age, String sex, String address, String illness, double hospitalCharges) {
+        this.name = name;
+        this.age = age;
+        this.sex = sex;
+        this.address = address;
+        this.illness = illness;
+        this.hospitalCharges = hospitalCharges;
+        this.daysAdmitted = 0; // Initialize days admitted to 0
+    }
+
+    // Getter methods for various patient attributes
+    // Setter methods can also be added if needed
+
+    public int getDaysAdmitted() {
+        return daysAdmitted;
+    }
+
+    public void incrementDaysAdmitted() {
+        daysAdmitted++;
+    }
+
+    // Display patient details
+    public void displayDetails() {
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+        System.out.println("Sex: " + sex);
+        System.out.println("Address: " + address);
+        System.out.println("Illness: " + illness);
+        System.out.println("Hospital Charges: $" + hospitalCharges);
+        System.out.println("Days Admitted: " + daysAdmitted);
+    }
+}
+
+public class HospitalManagementSystem {
+    public static void main(String[] args) {
+        ArrayList<Patient> patients = new ArrayList<>();
+
+        // Register patients
+        patients.add(new Patient("John", 45, "Male", "123 Main St", "Fever", 1000.0));
+        patients.add(new Patient("Alice", 30, "Female", "456 Elm St", "Injury", 1500.0));
+
+        // Simulate days admitted
+        for (Patient patient : patients) {
+            patient.incrementDaysAdmitted();
+        }
+
+        // Display patient details
+        System.out.println("Patient Details:");
+        for (Patient patient : patients) {
+            patient.displayDetails();
+            System.out.println();
+        }
+
+        // Remove inactive patients (admitted for more than 15 days)
+        Iterator<Patient> iterator = patients.iterator();
+        while (iterator.hasNext()) {
+            Patient patient = iterator.next();
+            if (patient.getDaysAdmitted() > 15) {
+                iterator.remove();
+            }
+        }
+
+        // Display updated patient list
+        System.out.println("Active Patients:");
+        for (Patient patient : patients) {
+            patient.displayDetails();
+            System.out.println();
+        }
+    }
+}
